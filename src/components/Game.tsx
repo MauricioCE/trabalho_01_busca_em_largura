@@ -3,8 +3,8 @@ import { Vector2 } from "../utils/types";
 import Vertex, { VertexProps } from "./Vertex";
 import { gameConstants } from "../utils/constants";
 import Entity from "./Entity";
-import bfs from "../utils/BFS";
 import { useEffect, useLayoutEffect, useState } from "react";
+import bfs from "../utils/BFS";
 
 export type VertexData = VertexProps & { coord: Vector2; parent?: VertexData };
 export type Map = VertexData[][];
@@ -22,12 +22,12 @@ const mapStr = [
   ". x x . x x . . . .",
   ". x . . x . . x x .",
   ". x . x . . x . . .",
-  ". x . . . . x . x x",
-  ". x . . . x x . . .",
+  ". . . . . . x . x x",
+  "p x . . . x x . . .",
   ". x x x . x . x x .",
-  ". . . . . x . . . .",
+  ". . . . . . . . . .",
   ". x . x x x . x x .",
-  ". x . . p x g . . .",
+  ". x . . . x g . . .",
 ];
 
 export default function Game() {
@@ -42,7 +42,7 @@ export default function Game() {
     if (!isPlaying) return;
     const i = setInterval(() => {
       handleSteps(+1);
-    }, 25);
+    }, 100);
     return () => clearTimeout(i);
   }, [steps, isPlaying]);
 

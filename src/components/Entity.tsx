@@ -1,7 +1,7 @@
 import { gameConstants } from "../utils/constants";
 import { Vector2 } from "../utils/types";
 import { css } from "@emotion/react";
-import Node, { NodeProps } from "./Node";
+import Node, { NodeProps } from "./BaseNode";
 
 type Props = NodeProps & { coord: Vector2 };
 

@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import { gameConstants } from "../utils/constants";
-import Node from "./Node";
+import Node from "./BaseNode";
 
 export type VertexProps = {
   dist: number;

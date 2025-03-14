@@ -1,4 +1,9 @@
 export type Vector2 = {
-  col: number;
-  row: number;
+  x: number;
+  y: number;
+};
+
+export type Size = {
+  width: number;
+  height: number;
 };

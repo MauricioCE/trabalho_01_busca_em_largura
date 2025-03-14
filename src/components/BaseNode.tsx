@@ -1,45 +1,45 @@
 import { gameConstants } from "../utils/constants";
-import { css, SerializedStyles } from "@emotion/react";
-
-type Type = "static" | "absolute";
+import { css } from "@emotion/react";
+import { Vector2, Size } from "../utils/types";
 
 export type NodeProps = {
+  pos: Vector2;
   bgColor: string;
   className?: string;
   txtColor?: string;
   label: string;
-  additionalStyle?: SerializedStyles;
-  type: Type;
+  size: Size;
 };
 
 const size = gameConstants.pacman.size;
 
 export default function Node({
-  additionalStyle,
-  bgColor: color,
+  pos: position,
+  bgColor: backgroundColor,
+  txtColor: textColor = "#000",
   label,
-  txtColor = "#000",
-  type,
+  size,
   ...rest
 }: NodeProps) {
-  const bgColor = color;
   return (
-    <div css={[style(bgColor, txtColor, type), additionalStyle]} {...rest}>
-      {label}
-    </div>
+    <g>
+      <text>{label}</text>
+      <rect
+        css={style(backgroundColor, textColor)}
+        x={position.x}
+        y={position.y}
+        width={size.width}
+        height={size.height}
+        fill="lightblue"
+        stroke="black"
+        strokeWidth="2"
+        {...rest}
+      />
+    </g>
   );
 }
 
-const style = (bgColor: string, txtColor: string, type: Type) => css`
-  position: ${type};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: ${size}px;
-  height: ${size}px;
-  background-color: ${bgColor};
-  border: 1px solid #8e8080;
-  border-collapse: collapse;
+const style = (bgColor: string, txtColor: string) => css`
   color: ${txtColor};
   font-size: 11px;
   font-weight: 100;

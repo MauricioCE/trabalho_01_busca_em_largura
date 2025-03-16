@@ -1,10 +1,26 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "./index.css";
+import Game from "./components/Game.tsx";
+import Map from "./components/Map.tsx";
 
-createRoot(document.getElementById('root')!).render(
+const stage = [
+  ". . . . . x . . . . . .",
+  "x . x x . . x . x x x .",
+  ". . . . x . . . . . . .",
+  ". x x . . x x x . . x .",
+  ". . . . . . . . . x x .",
+  ". x x x x . x . . . x .",
+  ". . x . x . . x . . x .",
+  ". . x . x . . x . . . .",
+  ". x x . x x . x . x x .",
+  ". x . . . . . . . x . .",
+  ". . x . . . x . . . . .",
+  ". . . . x x x x x x x .",
+];
+
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <App />
-  </StrictMode>,
-)
+    <Map stage={stage} />
+  </StrictMode>
+);

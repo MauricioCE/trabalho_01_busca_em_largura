@@ -17,7 +17,7 @@ export default function Floor({ dist, state }: FloorProps) {
 
   useLayoutEffect(() => {
     setColor(Color[state]);
-    setText(dist === Infinity ? "∞" : `${dist}`);
+    setText(dist === Infinity ? "" : `${dist}`);
   }, [dist, state]);
 
   return (

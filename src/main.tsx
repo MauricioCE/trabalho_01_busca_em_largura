@@ -21,6 +21,6 @@ const stage = [
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <Map stage={stage} />
+    <Game />
   </StrictMode>
 );

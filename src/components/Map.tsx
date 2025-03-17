@@ -2,9 +2,12 @@ import { ReactNode, useState } from "react";
 import MapNode from "./entities/MapNode";
 import { css } from "@emotion/react";
 
+export type MapType = ReactNode[][];
+
 export type MapData = {
-  width: number;
-  height: number;
+  map: MapType;
+  maxWidth: number;
+  maxHeight: number;
 };
 
 enum EntityID {
@@ -12,39 +15,44 @@ enum EntityID {
   FLOOR = ".",
 }
 
-type Props = {
+type MapProps = {
   stage: string[];
+  onMapGenerated: (map: MapType) => void;
 };
 
 const tileSize = 32;
-let width = 0;
-let height = 0;
 
-export default function Map({ stage: stageProp }: Props) {
-  const [map] = useState(generateMap(stageProp));
+export default function Map({ stage: stageProp, onMapGenerated }: MapProps) {
+  const [mapData] = useState(generateMap(stageProp, onMapGenerated));
+
   return (
     <div css={style}>
-      <svg width={width} height={height}>
-        {map}
+      <svg
+        width={mapData.maxWidth * tileSize}
+        height={mapData.maxHeight * tileSize}
+      >
+        {mapData.map}
       </svg>
     </div>
   );
 }
 
-function generateMap(stage: string[]): ReactNode[][] {
-  const map: ReactNode[][] = [];
-  width = tileSize * stage.length;
-  height = tileSize * stage.length;
-  console.log(stage.length);
+function generateMap(
+  stage: string[],
+  onMapGenerated: (map: MapType) => void
+): MapData {
+  const map: MapType = [];
+  const maxHeight = stage.length;
+  let maxWidth = 0;
 
   for (let rowIndex = 0; rowIndex < stage.length; rowIndex++) {
+    const row = stage[rowIndex].split(" ");
+    if (row.length > maxWidth) maxWidth = row.length;
     if (map[rowIndex] === undefined) map[rowIndex] = [];
-    const rowData = stage[rowIndex].split(" ");
 
-    for (let colIndex = 0; colIndex < rowData.length; colIndex++) {
-      const char = rowData[colIndex];
+    for (let colIndex = 0; colIndex < row.length; colIndex++) {
+      const char = row[colIndex];
 
-      if (char === " " || !char) continue;
       map[rowIndex][colIndex] = (
         <MapNode
           key={`${rowIndex}${colIndex}`}
@@ -59,14 +67,13 @@ function generateMap(stage: string[]): ReactNode[][] {
       );
     }
   }
-
-  return map;
+  onMapGenerated(map);
+  return { map: map, maxWidth: maxWidth, maxHeight: maxHeight };
 }
 
 const style = css`
   display: flex;
   justify-content: center;
   align-items: center;
-  transform: scale(1.5);
   transform-origin: top center;
 `;

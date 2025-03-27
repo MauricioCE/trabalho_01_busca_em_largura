@@ -1,0 +1,15 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="path" clip-path="url(#clip0_92_1152)">
+<rect width="64" height="64" fill="white"/>
+<rect id="straight" x="56" y="64" width="48" height="64" transform="rotate(-180 56 64)" fill="#15E087"/>
+<g id="curve">
+<path d="M36 8C47.0457 8 56 16.9543 56 28V56L0 56L2.09815e-06 8L36 8Z" fill="#15E087"/>
+<path d="M56 64L8 64L8 56L56 56L56 64Z" fill="#15E087"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_92_1152">
+<rect width="64" height="64" fill="white"/>
+</clipPath>
+</defs>
+</svg>

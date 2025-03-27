@@ -13,6 +13,7 @@
     "@emotion/react": "^11.14.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-icons": "^5.5.0",
     "trabalho_01_busca_em_largura": "file:"
   },
   "devDependencies": {
@@ -26,6 +27,7 @@
     "globals": "^15.15.0",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.24.1",
-    "vite": "^6.2.0"
+    "vite": "^6.2.0",
+    "vite-plugin-svgr": "^4.3.0"
   }
 }

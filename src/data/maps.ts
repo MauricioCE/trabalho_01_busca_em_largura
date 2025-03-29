@@ -1,4 +1,4 @@
-export const mapsList = [
+export const stagesList = [
   [
     "x x x x x x x x x x x x x x x x",
     "x . x x . . x . x x x . . . P x",
@@ -26,5 +26,5 @@ export const mapsList = [
     ". . x . . . . . .",
   ],
 
-  [". . . . .", ". . . . .", ". . g . .", ". . . . .", ". . . . ."],
+  [". . . . .", ". . . . .", ". . g . .", ". p . . .", ". . . . ."],
 ];

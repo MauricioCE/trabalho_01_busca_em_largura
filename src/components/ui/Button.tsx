@@ -37,4 +37,8 @@ const wrapperStyle = (iconLocation: "start" | "end", gap: string) => css`
   :hover {
     opacity: 0.8;
   }
+
+  :active {
+    transform: scale(0.96);
+  }
 `;

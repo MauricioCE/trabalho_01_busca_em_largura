@@ -1,53 +1,41 @@
-import { Vector2 } from "../../utils/types";
+import { memo } from "react";
+import { Vector2 } from "../../common/types";
+import { useGameStore } from "../../stores/mainStore";
 import Node from "./Node";
 
 const Color = {
   current: "#00a173",
-  queued: "#7a7788",
+  queued: "#290f8e",
   unVisited: "#0c134f",
-  visited: "#7a0909",
+  visited: "#727380",
   wall: "#20533c",
 } as const;
 
-type Type = "floor" | "wall";
+export type TileType = "floor" | "wall";
 
 export type TileState = [
   "current" | "queued" | "unVisited" | "visited",
   "neighbor" | "notNeighbor"
 ];
 
-export type MapTileData = {
-  dist: number;
+export type TileData = {
   coord: Vector2;
+  dist: number;
   state: TileState;
-  type: Type;
+  type: TileType;
 };
 
-type TileProps = {
-  onTileChange: () => void;
-  map: MapTileData[][];
-} & MapTileData;
+type TileProps = TileData;
 
-export default function MapTile({
-  dist,
-  coord,
-  state,
-  type,
-  map,
-  onTileChange,
-}: TileProps) {
+function Tile({ coord, state, type }: TileProps) {
   const color = type === "wall" ? Color["wall"] : Color[state[0]];
+  const map = useGameStore((state) => state.mapTilesData);
+  const triggerUpdate = useGameStore((state) => state.triggerUpdate);
 
   function handleClick() {
-    type = type === "floor" ? "wall" : "floor";
-    map[coord.x][coord.y] = {
-      dist: dist,
-      coord: coord,
-      state: state,
-      type: type,
-    };
-
-    onTileChange();
+    const newType = type === "floor" ? "wall" : "floor";
+    map[coord.x][coord.y].type = newType;
+    triggerUpdate(1);
   }
 
   return (
@@ -72,3 +60,5 @@ export default function MapTile({
     </Node>
   );
 }
+
+export default memo(Tile);

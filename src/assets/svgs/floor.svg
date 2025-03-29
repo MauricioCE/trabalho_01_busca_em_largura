@@ -1,6 +1,0 @@
-<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="floor">
-<rect id="tile" width="64" height="64" fill="#0C134F"/>
-<rect id="stroke" x="2" y="2" width="60" height="60" stroke="#027051" stroke-width="4" stroke-dasharray="8 8"/>
-</g>
-</svg>

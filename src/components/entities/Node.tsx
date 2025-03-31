@@ -11,10 +11,9 @@ export type NodeProps = {
   className?: string;
   coord: Vector2;
   metaData?: MetaData[];
-  onClick?: () => void;
-};
+} & React.SVGProps<SVGAElement>;
 
-export default function Node({ children, coord, onClick, ...rest }: NodeProps) {
+export default function Node({ children, coord, ...rest }: NodeProps) {
   const [position, setPosition] = useState<Vector2>({ x: 0, y: 0 });
 
   useEffect(() => {
@@ -23,11 +22,7 @@ export default function Node({ children, coord, onClick, ...rest }: NodeProps) {
   }, [coord]);
 
   return (
-    <g
-      onClick={onClick}
-      transform={`translate(${position.x}, ${position.y})`}
-      {...rest}
-    >
+    <g transform={`translate(${position.x}, ${position.y})`} {...rest}>
       {children}
     </g>
   );

@@ -1,34 +1,55 @@
-type Direction = "left" | "up" | "right" | "down";
-type Type = "straight" | "curved";
+import { Direction, Vector2 } from "../../common/types";
+import UpDownTexture from "../../assets/svgs/path/path_up_down.svg?react";
+import LeftRightTexture from "../../assets/svgs/path/path_left_right.svg?react";
+import LeftDownTexture from "../../assets/svgs/path/path_left_down.svg?react";
+import LeftUpTexture from "../../assets/svgs/path/path_left_up.svg?react";
+import RightDownTexture from "../../assets/svgs/path/path_right_down.svg?react";
+import RightUpTexture from "../../assets/svgs/path/path_right_up.svg?react";
+import Node from "./Node";
 
-export default function Path(type: Type, direction: [Direction, Direction]) {
-  const texture = type === "straight" ? straightTexture : curvedTexture;
-  const ang = 
-  return (
-    <>
-      <rect id="background" width="64" height="64" fill="#0C134F" />
-    </>
-  );
+type Props = {
+  coord: Vector2;
+  directions: [Direction, Direction];
+};
+
+export default function Path({ coord, directions }: Props) {
+  return <Node coord={coord}>{getTexture(directions)}</Node>;
 }
 
-const straightTexture = (
-  <rect
-    id="straight"
-    x="56"
-    y="64"
-    width="48"
-    height="64"
-    transform="rotate(-180 56 64)"
-    fill="#15E087"
-  />
-);
+function getTexture(directions: [Direction, Direction]) {
+  if (
+    (directions[0] === "up" && directions[1] === "down") ||
+    (directions[0] === "down" && directions[1] === "up")
+  )
+    return <UpDownTexture />;
 
-const curvedTexture = (
-  <g id="curve">
-    <path
-      d="M36 8C47.0457 8 56 16.9543 56 28V56L0 56L2.09815e-06 8L36 8Z"
-      fill="#15E087"
-    />
-    <path d="M56 64L8 64L8 56L56 56L56 64Z" fill="#15E087" />
-  </g>
-);
+  if (
+    (directions[0] === "left" && directions[1] === "right") ||
+    (directions[0] === "right" && directions[1] === "left")
+  )
+    return <LeftRightTexture />;
+
+  if (
+    (directions[0] === "left" && directions[1] === "up") ||
+    (directions[0] === "up" && directions[1] === "left")
+  )
+    return <LeftUpTexture />;
+
+  if (
+    (directions[0] === "left" && directions[1] === "down") ||
+    (directions[0] === "down" && directions[1] === "left")
+  )
+    return <LeftDownTexture />;
+
+  if (
+    (directions[0] === "right" && directions[1] === "down") ||
+    (directions[0] === "down" && directions[1] === "right")
+  )
+    return <RightDownTexture />;
+
+  if (
+    (directions[0] === "right" && directions[1] === "up") ||
+    (directions[0] === "up" && directions[1] === "right")
+  )
+    return <RightUpTexture />;
+}

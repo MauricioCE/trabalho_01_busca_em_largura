@@ -1,7 +1,6 @@
 import { Vector2 } from "./types";
 import { TileData } from "../components/entities/Tile";
-import { Math } from "./math";
-import { isSamePosition } from "./utils";
+import { clamp, isSamePosition } from "./utils";
 import { directions } from "./constants";
 import { getNeighbors } from "./mapHandler";
 
@@ -43,7 +42,7 @@ export function getMaxSteps(agentCoord: Vector2, map: TileData[][]): number {
       }
     }
   }
-  return Math.clamp(count, 0, count);
+  return clamp(count, 0, count);
 }
 
 // BFS completa, com todos os passos e controlada pela quantidade de steps
@@ -91,7 +90,6 @@ export function bfs(
 
     if (isSamePosition(currentTile.coord, targetCoord)) {
       pathToTarget.push(...data.path);
-      console.log(pathToTarget);
     }
   }
   return pathToTarget;

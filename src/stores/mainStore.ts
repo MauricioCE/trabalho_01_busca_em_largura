@@ -1,8 +1,9 @@
 import { create } from "zustand";
-import { MapTiles, Size, Vector2 } from "../common/types";
+import { Size, Vector2 } from "../common/types";
+import { GameMap } from "../components/entities/Map";
 
 export interface GameState {
-  mapTilesData: MapTiles;
+  map: GameMap;
   mapSize: Size;
   pacmanPos: Vector2;
   ghostPos: Vector2;
@@ -10,7 +11,7 @@ export interface GameState {
   maxSteps: number;
   updateMap: number;
 
-  setMapTilesData: (newMap: MapTiles) => void;
+  setMap: (newMap: GameMap) => void;
   setMapSize: (newSize: Size) => void;
   setPacmanPos: (newPos: Vector2) => void;
   setGhostPos: (newPos: Vector2) => void;
@@ -20,7 +21,7 @@ export interface GameState {
 }
 
 export const useGameStore = create<GameState>((set) => ({
-  mapTilesData: [],
+  map: [],
   mapSize: { width: 0, height: 0 },
   pacmanPos: { x: -10, y: 0 },
   ghostPos: { x: -10, y: 0 },
@@ -28,7 +29,7 @@ export const useGameStore = create<GameState>((set) => ({
   maxSteps: 0,
   updateMap: 1,
 
-  setMapTilesData: (newMap: MapTiles) => set({ mapTilesData: newMap }),
+  setMap: (newMap: GameMap) => set({ map: newMap }),
   setMapSize: (newSize: Size) => set({ mapSize: newSize }),
   setPacmanPos: (newPos: Vector2) => set({ pacmanPos: newPos }),
   setGhostPos: (newPos: Vector2) => set({ ghostPos: newPos }),

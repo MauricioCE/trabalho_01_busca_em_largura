@@ -7,7 +7,7 @@ const Color = {
   current: "#00a173",
   queued: "#290f8e",
   unVisited: "#0c134f",
-  visited: "#727380",
+  visited: "#0c134f",
   wall: "#20533c",
 } as const;
 
@@ -29,7 +29,7 @@ type TileProps = TileData;
 
 function Tile({ coord, state, type }: TileProps) {
   const color = type === "wall" ? Color["wall"] : Color[state[0]];
-  const map = useGameStore((state) => state.mapTilesData);
+  const map = useGameStore((state) => state.map);
   const triggerUpdate = useGameStore((state) => state.triggerUpdate);
 
   function handleClick() {

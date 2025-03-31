@@ -1,7 +1,7 @@
 export const stagesList = [
   [
     "x x x x x x x x x x x x x x x x",
-    "x . x x . . x . x x x . . . P x",
+    "x . x x . . x . x x x . . . . x",
     "x . . . x . . . . . . . . . . x",
     "x x x . . x x x . . x . . . . x",
     "x . . . . . . . . x x . . . . x",
@@ -9,8 +9,8 @@ export const stagesList = [
     "x . x . x . . x . . x . . . . x",
     "x . . . . . . x . . . . . . . x",
     "x x x . g . . x . x x . . . . x",
-    "x . . . . . . . . x . . . . . x",
-    "x . x . . . x . . . . . . . . x",
+    "x . . . . p . . . x . . . . . x",
+    "x . x . . . x . . p . . . . . x",
     "x x x x x x x x x x x x x x x x",
   ],
 

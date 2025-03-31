@@ -1,74 +1,73 @@
-import { useLayoutEffect, useMemo, useState } from "react";
-import { Vector2 } from "../../common/types";
+import { ReactNode, useEffect, useLayoutEffect, useState } from "react";
+import { Direction, Vector2 } from "../../common/types";
 import { useGameStore } from "../../stores/mainStore";
-import Node from "./Node";
 import generateMapData from "../../common/mapHandler";
-import { bfs, getMaxSteps } from "../../common/BFS";
 import { css } from "@emotion/react";
 import Pacman from "./Pacman";
 import Ghost from "./Ghost";
 import Tile, { TileData } from "./Tile";
+import { bfs, getMaxSteps } from "../../common/bfs";
+import Text from "./Text";
+import Path from "./Path";
+import { directionBetween, isSamePosition } from "../../common/utils";
+import { maxMapWidth } from "../../common/constants";
 
 type Props = {
   stage: string[];
 };
 
+export type GameMap = TileData[][];
+
 export default function Map({ stage }: Props) {
-  const mapData = useMemo(() => {
-    return generateMapData(stage);
+  useEffect(() => {
+    const mapData = generateMapData(stage);
+    useGameStore.getState().setMap(mapData.map);
+    useGameStore.getState().setMapSize(mapData.size);
+    useGameStore.getState().setPacmanPos(mapData.pacmanPos);
+    useGameStore.getState().setGhostPos(mapData.ghostPos);
   }, [stage]);
 
-  const [path, setPath] = useState<Vector2[]>();
-  // const timeoutId = useRef(-1);
-  // const isPlaying = useRef(false);
-
+  const map = useGameStore((state) => state.map);
+  const mapSize = useGameStore((state) => state.mapSize);
   const pacmanPos = useGameStore((state) => state.pacmanPos);
   const ghostPos = useGameStore((state) => state.ghostPos);
+
+  const [path, setPath] = useState<Vector2[]>();
   const steps = useGameStore((state) => state.steps);
-  const map = useGameStore((state) => state.mapTilesData);
-  const mapSize = useGameStore((state) => state.mapSize);
   const update = useGameStore((state) => state.updateMap);
-
-  const setPacmanPos = useGameStore((state) => state.setPacmanPos);
-  const setGhostPos = useGameStore((state) => state.setGhostPos);
-  const setMap = useGameStore((state) => state.setMapTilesData);
-  const setMapSize = useGameStore((state) => state.setMapSize);
-
-  setPacmanPos(mapData.pacmanPos);
-  setGhostPos(mapData.ghostPos);
-  setMap(mapData.map);
-  setMapSize(mapData.size);
+  const setMaxSteps = useGameStore((state) => state.setMaxSteps);
 
   // Sempre que for necessário realizar a atualização de algum componente do mapa
   useLayoutEffect(() => {
-    // Reseta todos os estados dos tiles
-    function resetTilesStates() {
+    function resetStatesAndDist() {
       if (!map) return;
       map.map((row) => {
         row.map((tile) => {
           tile.state = ["unVisited", "notNeighbor"];
+          tile.dist = Infinity;
         });
       });
     }
 
     if (map.length === 0) return;
-    resetTilesStates();
-    getMaxSteps(ghostPos, map);
+    resetStatesAndDist();
+    setMaxSteps(getMaxSteps(ghostPos, map));
     setPath(bfs(ghostPos, pacmanPos, map, steps));
-  }, [ghostPos, map, pacmanPos, steps, update]);
+  }, [ghostPos, map, pacmanPos, setMaxSteps, steps, update]);
 
   // useAnimation(isPlaying, timeoutId, incrementSteps);
 
   return (
-    <div css={wrapperStyle}>
+    <div css={wrapperStyle(maxMapWidth)}>
       <svg
         width="100%"
         height="100%"
         viewBox={`0 0 ${mapSize.width} ${mapSize.height}`}
         preserveAspectRatio="xMidYMid meet"
       >
-        {renderTiles(map)}
-        {path && renderPath(path)}
+        {renderTilesLayer(map)}
+        {path && renderPathLayer(path)}
+        {renderTextLayer(map, pacmanPos, ghostPos)}
         {pacmanPos && <Pacman coord={pacmanPos} />}
         {ghostPos && <Ghost coord={ghostPos} />}
       </svg>
@@ -78,10 +77,10 @@ export default function Map({ stage }: Props) {
 
 // RENDERS =====================================================================================
 
-function renderTiles(map: TileData[][]) {
+function renderTilesLayer(gameMap: GameMap) {
   return (
-    <g>
-      {map.map((row, rowIndex) => (
+    <g id="tiles_layer">
+      {gameMap.map((row, rowIndex) => (
         <g key={`row-${rowIndex}`}>
           {row.map((obj, colIndex) => (
             <Tile
@@ -98,24 +97,62 @@ function renderTiles(map: TileData[][]) {
   );
 }
 
-function renderPath(path: Vector2[]) {
-  return path.map((coord) => {
-    return (
-      <Node coord={coord}>
-        <circle
-          x={19}
-          y={19}
-          width="26"
-          height="26"
-          cx="32"
-          cy="32"
-          r="20"
-          fill="#D9D9D9"
-        />
-      </Node>
+function renderPathLayer(path: Vector2[]) {
+  const list: ReactNode[] = [];
+
+  for (let index = 1; index < path.length - 1; index++) {
+    const current = path[index];
+    const previous = path[index - 1];
+    const next = path[index + 1];
+    const directions: [Direction, Direction] = [
+      directionBetween(current, previous),
+      directionBetween(current, next),
+    ];
+    list.push(
+      <Path key={index} coord={current} directions={directions}></Path>
     );
-  });
+  }
+
+  return <g id="path_layer">{list}</g>;
 }
+
+function renderTextLayer(
+  map: GameMap,
+  pacmanCoord: Vector2,
+  ghostCoord: Vector2
+) {
+  return (
+    <g id="text_layer">
+      {map.map((row, rowIndex) => {
+        return row.map((tileData, colIndex) => {
+          const coord = { x: rowIndex, y: colIndex };
+          let dist = Infinity;
+          if (
+            !isSamePosition(coord, pacmanCoord) &&
+            !isSamePosition(coord, ghostCoord)
+          ) {
+            dist = tileData.dist;
+          }
+          return (
+            <Text
+              key={`${rowIndex}-${colIndex}`}
+              coord={tileData.coord}
+              dist={dist}
+            />
+          );
+        });
+      })}
+    </g>
+  );
+}
+
+// STYLES =====================================================================================
+
+const wrapperStyle = (maxWidth: number) => css`
+  width: 100%;
+  max-width: ${maxWidth}px;
+  background-color: #395fdd;
+`;
 
 // HOOKS =====================================================================================
 
@@ -134,10 +171,3 @@ function renderPath(path: Vector2[]) {
 //     return () => clearTimeout(timeoutId.current);
 //   }, [isPlaying]);
 // }
-
-// STYLES =====================================================================================
-
-const wrapperStyle = css`
-  width: 100%;
-  max-width: 700px;
-`;

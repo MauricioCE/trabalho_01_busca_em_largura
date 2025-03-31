@@ -1,5 +1,3 @@
-import { TileData } from "../components/entities/Tile";
-
 export type Vector2 = {
   x: number;
   y: number;
@@ -15,4 +13,4 @@ export type Range = {
   max: number;
 };
 
-export type MapTiles = TileData[][];
+export type Direction = "up" | "down" | "left" | "right";

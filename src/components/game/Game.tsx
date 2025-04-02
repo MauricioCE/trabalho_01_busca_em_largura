@@ -1,8 +1,8 @@
 import { css } from "@emotion/react";
 import Map from "./Map";
-import Controls from "./ui/Controls";
-import { stagesList } from "../data/stages";
-import Header from "./ui/header/Header";
+import Controls from "../ui/Controls";
+import { stagesList } from "../../data/stages";
+import Header from "../ui/header/Header";
 
 // const animSpeed = 100;
 const stage = stagesList[0];

@@ -1,10 +1,9 @@
 import { memo } from "react";
-import { isSamePosition } from "../../common/utils";
+import { isSamePosition } from "../../../common/utils";
 import Text from "../Text";
-import { useGameStore } from "../../stores/mainStore";
+import { useGameStore } from "../../../stores/mainStore";
 
 function TextLayer() {
-  console.log("Text layer");
   const map = useGameStore((state) => state.map);
   const pacmanCoord = useGameStore((state) => state.pacmanCoord);
   const ghostCoord = useGameStore((state) => state.ghostCoord);
@@ -13,6 +12,8 @@ function TextLayer() {
     <g id="text_layer">
       {map.map((row, rowIndex) => {
         return row.map((tileData, colIndex) => {
+          if (map[rowIndex][colIndex].type === "wall") return null;
+
           const coord = { x: rowIndex, y: colIndex };
           let dist = Infinity;
           if (

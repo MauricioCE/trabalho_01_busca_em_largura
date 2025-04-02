@@ -15,7 +15,7 @@ export type Range = {
 
 export type Direction = "up" | "down" | "left" | "right";
 
-export type KeyMap = {
+export type MovementKeys = {
   up: string;
   down: string;
   left: string;

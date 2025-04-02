@@ -1,9 +1,8 @@
 import { memo } from "react";
 import Tile from "../Tile";
-import { useGameStore } from "../../stores/mainStore";
+import { useGameStore } from "../../../stores/mainStore";
 
 function TilesLayer() {
-  console.log("Tile layer");
   const map = useGameStore((state) => state.map);
 
   return (

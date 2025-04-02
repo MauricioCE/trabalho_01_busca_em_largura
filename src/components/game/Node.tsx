@@ -1,5 +1,5 @@
-import { Vector2 } from "../common/types";
-import { coordinateToPosition } from "../common/utils";
+import { Vector2 } from "../../common/types";
+import { coordinateToPosition } from "../../common/utils";
 
 export type MetaData = {
   [key: string]: string;

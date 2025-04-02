@@ -1,6 +1,6 @@
 import { memo } from "react";
-import { Vector2 } from "../common/types";
-import { useGameStore } from "../stores/mainStore";
+import { Vector2 } from "../../common/types";
+import { useGameStore } from "../../stores/mainStore";
 import Node from "./Node";
 import { css } from "@emotion/react";
 
@@ -31,6 +31,7 @@ type TileProps = { coord: Vector2 };
 function Tile({ coord }: TileProps) {
   const map = useGameStore((state) => state.map);
   const setMap = useGameStore((state) => state.setMap);
+  const triggerUpdate = useGameStore((state) => state.triggerUpdate);
   const data = map[coord.x][coord.y];
   const color = data.type === "wall" ? Color["wall"] : Color[data.state[0]];
 
@@ -39,6 +40,7 @@ function Tile({ coord }: TileProps) {
     if (newType !== data.type) {
       map[coord.x][coord.y].type = newType;
       setMap([...map]);
+      triggerUpdate(1);
     }
   }
 

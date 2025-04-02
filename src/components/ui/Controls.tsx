@@ -5,17 +5,12 @@ import {
   MdKeyboardDoubleArrowLeft,
   MdKeyboardDoubleArrowRight,
 } from "react-icons/md";
-import { clamp } from "../../common/utils";
 
 export default function Controls() {
-  const maxSteps = useGameStore((state) => state.maxSteps);
-  const steps = useGameStore((state) => state.steps);
-  const setSteps = useGameStore((state) => state.setSteps);
+  const setSteps = useGameStore((state) => state.setStepsBy);
+
   function handleSteps(increment: number) {
-    console.log(steps);
-    console.log(maxSteps);
-    const newStep = clamp(steps + increment, 0, maxSteps);
-    setSteps(newStep);
+    setSteps(increment);
   }
 
   return (

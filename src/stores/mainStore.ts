@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { Size, Vector2 } from "../common/types";
-import { GameMap } from "../components/Map";
+import { GameMap } from "../components/game/Map";
+import { clamp } from "../common/utils";
 
 export interface GameState {
   map: GameMap;
@@ -16,7 +17,7 @@ export interface GameState {
   setMapSize: (newSize: Size) => void;
   setPacmanCoord: (coord: Vector2) => void;
   setGhostCoord: (coord: Vector2) => void;
-  setSteps: (value: number) => void;
+  setStepsBy: (value: number) => void;
   setMaxSteps: (value: number) => void;
   triggerUpdate: (value: number) => void;
   setPath: (path: Vector2[]) => void;
@@ -36,8 +37,9 @@ export const useGameStore = create<GameState>((set) => ({
   setMapSize: (newSize: Size) => set({ mapSize: newSize }),
   setPacmanCoord: (coord: Vector2) => set({ pacmanCoord: coord }),
   setGhostCoord: (coord: Vector2) => set({ ghostCoord: coord }),
-  setSteps: (value: number) => set({ steps: value }),
+  setStepsBy: (value: number) =>
+    set((state) => ({ steps: clamp(state.steps + value, 0, state.maxSteps) })),
   setMaxSteps: (value: number) => set({ maxSteps: value }),
   triggerUpdate: () => set((state) => ({ updateMap: state.updateMap + 1 })),
-  setPath: () => set((state) => ({ path: state.path })),
+  setPath: (path: Vector2[]) => set({ path: path }),
 }));

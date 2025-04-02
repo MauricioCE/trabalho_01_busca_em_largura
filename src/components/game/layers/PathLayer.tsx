@@ -1,11 +1,10 @@
 import { memo, ReactNode } from "react";
-import { Direction, Vector2 } from "../../common/types";
-import { directionBetween } from "../../common/utils";
+import { Direction, Vector2 } from "../../../common/types";
+import { directionBetween } from "../../../common/utils";
+import { useGameStore } from "../../../stores/mainStore";
 import Path from "../Path";
-import { useGameStore } from "../../stores/mainStore";
 
 function PathLayer() {
-  console.log("Path layer");
   const path = useGameStore((state) => state.path);
 
   return <g id="path_layer">{renderPath(path)}</g>;
@@ -26,7 +25,6 @@ function renderPath(path: Vector2[]) {
       <Path key={index} coord={current} directions={directions}></Path>
     );
   }
-
   return list;
 }
 

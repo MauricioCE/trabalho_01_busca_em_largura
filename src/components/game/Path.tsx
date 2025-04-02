@@ -1,4 +1,4 @@
-import { Direction, Vector2 } from "../common/types";
+import { Direction, Vector2 } from "../../common/types";
 import UpDownTexture from "../../assets/svgs/path/path_up_down.svg?react";
 import LeftRightTexture from "../../assets/svgs/path/path_left_right.svg?react";
 import LeftDownTexture from "../../assets/svgs/path/path_left_down.svg?react";

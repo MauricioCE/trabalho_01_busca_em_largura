@@ -1,13 +1,13 @@
-import { GameMap } from "../components/entities/Map.tsx";
-import { TileData } from "../components/entities/Tile.tsx";
+import { GameMap } from "../components/Map.tsx";
+import { TileData } from "../components/Tile.tsx";
 import { directions, tileGap, tileSize } from "./constants.ts";
 import { Size, Vector2 } from "./types.ts";
 
 export type GameMapData = {
   map: GameMap;
   size: Size;
-  pacmanPos: Vector2;
-  ghostPos: Vector2;
+  pacmanCoord: Vector2;
+  ghostCoord: Vector2;
 };
 
 enum EntityID {
@@ -28,10 +28,10 @@ export default function generateMapData(stage: string[]): GameMapData {
     const row = rowStr.split(" ");
 
     if (row.length > mapWidth) mapWidth = row.length;
-    if (map[rowIndex] === undefined) map[rowIndex] = [];
 
     row.forEach((char, colIndex) => {
-      const coord = { x: rowIndex, y: colIndex };
+      if (map[colIndex] === undefined) map[colIndex] = [];
+      const coord = { x: colIndex, y: rowIndex };
       char = char.toLowerCase();
 
       if (char === EntityID.PACMAN) {
@@ -40,10 +40,10 @@ export default function generateMapData(stage: string[]): GameMapData {
         ghostCoord = coord;
       }
 
-      map[rowIndex].push({
+      map[colIndex].push({
         state: ["unVisited", "notNeighbor"],
         type: char === EntityID.WALL ? "wall" : "floor",
-        coord: { x: rowIndex, y: colIndex },
+        coord: { x: colIndex, y: rowIndex },
         dist: Infinity,
       });
     });
@@ -55,8 +55,8 @@ export default function generateMapData(stage: string[]): GameMapData {
       width: mapWidth * tileSize + mapWidth * tileGap,
       height: mapHeight * tileSize + mapHeight * tileGap,
     },
-    pacmanPos: pacmanCoord,
-    ghostPos: ghostCoord,
+    pacmanCoord: pacmanCoord,
+    ghostCoord: ghostCoord,
   };
 }
 

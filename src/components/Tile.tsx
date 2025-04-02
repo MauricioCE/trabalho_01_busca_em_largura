@@ -1,7 +1,8 @@
 import { memo } from "react";
-import { Vector2 } from "../../common/types";
-import { useGameStore } from "../../stores/mainStore";
+import { Vector2 } from "../common/types";
+import { useGameStore } from "../stores/mainStore";
 import Node from "./Node";
+import { css } from "@emotion/react";
 
 const Color = {
   current: "#00a173",
@@ -25,23 +26,26 @@ export type TileData = {
   type: TileType;
 };
 
-type TileProps = TileData;
+type TileProps = { coord: Vector2 };
 
-function Tile({ coord, state, type }: TileProps) {
-  const color = type === "wall" ? Color["wall"] : Color[state[0]];
+function Tile({ coord }: TileProps) {
   const map = useGameStore((state) => state.map);
-  const triggerUpdate = useGameStore((state) => state.triggerUpdate);
+  const setMap = useGameStore((state) => state.setMap);
+  const data = map[coord.x][coord.y];
+  const color = data.type === "wall" ? Color["wall"] : Color[data.state[0]];
 
   function handleClick() {
-    const newType = type === "floor" ? "wall" : "floor";
-    map[coord.x][coord.y].type = newType;
-    triggerUpdate(1);
+    const newType = data.type === "floor" ? "wall" : "floor";
+    if (newType !== data.type) {
+      map[coord.x][coord.y].type = newType;
+      setMap([...map]);
+    }
   }
 
   return (
-    <Node coord={coord} onClick={handleClick}>
+    <Node css={style} coord={coord} onClick={handleClick}>
       <rect id="tile" width="64" height="64" fill={color} />
-      {state[1] === "neighbor" && (
+      {data.state[1] === "neighbor" && (
         <rect
           id="stroke"
           x="2"
@@ -60,5 +64,9 @@ function Tile({ coord, state, type }: TileProps) {
     </Node>
   );
 }
+
+const style = css`
+  cursor: pointer;
+`;
 
 export default memo(Tile);

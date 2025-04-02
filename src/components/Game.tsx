@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import Map from "./entities/Map";
+import Map from "./Map";
 import Controls from "./ui/Controls";
 import { stagesList } from "../data/stages";
 import Header from "./ui/header/Header";

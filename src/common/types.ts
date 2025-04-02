@@ -14,3 +14,10 @@ export type Range = {
 };
 
 export type Direction = "up" | "down" | "left" | "right";
+
+export type KeyMap = {
+  up: string;
+  down: string;
+  left: string;
+  right: string;
+};

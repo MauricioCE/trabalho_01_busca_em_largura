@@ -8,11 +8,14 @@ import {
 import { clamp } from "../../common/utils";
 
 export default function Controls() {
+  const maxSteps = useGameStore((state) => state.maxSteps);
+  const steps = useGameStore((state) => state.steps);
+  const setSteps = useGameStore((state) => state.setSteps);
   function handleSteps(increment: number) {
-    const maxSteps = useGameStore.getState().maxSteps;
-    const steps = useGameStore.getState().steps;
+    console.log(steps);
+    console.log(maxSteps);
     const newStep = clamp(steps + increment, 0, maxSteps);
-    useGameStore.getState().setSteps(newStep);
+    setSteps(newStep);
   }
 
   return (

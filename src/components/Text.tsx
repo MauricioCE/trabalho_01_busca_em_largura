@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import { Vector2 } from "../../common/types";
+import { Vector2 } from "../common/types";
 import Node from "./Node";
 
 type Props = {
@@ -29,4 +29,5 @@ export default function Text({ coord, dist }: Props) {
 const textStyle = css`
   font-size: 24px;
   color: "#027051";
+  pointer-events: none;
 `;

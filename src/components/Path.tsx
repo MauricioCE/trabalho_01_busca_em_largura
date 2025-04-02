@@ -1,4 +1,4 @@
-import { Direction, Vector2 } from "../../common/types";
+import { Direction, Vector2 } from "../common/types";
 import UpDownTexture from "../../assets/svgs/path/path_up_down.svg?react";
 import LeftRightTexture from "../../assets/svgs/path/path_left_right.svg?react";
 import LeftDownTexture from "../../assets/svgs/path/path_left_down.svg?react";
@@ -6,6 +6,7 @@ import LeftUpTexture from "../../assets/svgs/path/path_left_up.svg?react";
 import RightDownTexture from "../../assets/svgs/path/path_right_down.svg?react";
 import RightUpTexture from "../../assets/svgs/path/path_right_up.svg?react";
 import Node from "./Node";
+import { css } from "@emotion/react";
 
 type Props = {
   coord: Vector2;
@@ -13,7 +14,11 @@ type Props = {
 };
 
 export default function Path({ coord, directions }: Props) {
-  return <Node coord={coord}>{getTexture(directions)}</Node>;
+  return (
+    <Node css={style} coord={coord}>
+      {getTexture(directions)}
+    </Node>
+  );
 }
 
 function getTexture(directions: [Direction, Direction]) {
@@ -53,3 +58,7 @@ function getTexture(directions: [Direction, Direction]) {
   )
     return <RightUpTexture />;
 }
+
+const style = css`
+  pointer-events: none;
+`;
